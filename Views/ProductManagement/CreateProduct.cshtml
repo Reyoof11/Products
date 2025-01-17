@@ -1,0 +1,161 @@
+﻿@model IEnumerable<Products.Models.Products1>
+
+<!-- Include Google Font -->
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Dancing+Script:wght@400&family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet"> <!-- Add Playfair Display font -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet"> <!-- Add Bootstrap Icons CSS -->
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Fancier font for English */
+        h1, h2, h3, p, .table th, .table td {
+            font-family: 'Playfair Display', serif; /* Change to Playfair Display for fancier text */
+        }
+
+        .btn-custom-edit {
+            background-color: #4CAF50; /* Green for edit */
+            color: white;
+            border-radius: 8px;
+        }
+
+        .btn-custom-delete {
+            background-color: #F44336; /* Red for delete */
+            color: white;
+            border-radius: 8px;
+        }
+
+        .btn-custom-add {
+            background-color: #007BFF; /* Blue for add */
+            color: white;
+            border-radius: 8px;
+        }
+
+        .section-image {
+            position: relative;
+            text-align: center;
+            color: white;
+            height: 500px; /* Set fixed height to keep the image and text proportions */
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+            .section-image img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover; /* Ensure the image covers the space without stretching */
+                border-radius: 10px;
+            }
+
+            .section-image h3 {
+                position: absolute;
+                top: 20%;
+                left: 50%;
+                transform: translateX(-50%);
+                font-size: 3em;
+                font-weight: bold;
+                margin-bottom: 10px;
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            }
+
+            .section-image p {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translateX(-50%);
+                font-size: 1.2em;
+                font-style: italic;
+                max-width: 80%;
+                margin-bottom: 20px;
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            }
+
+            .section-image .highlight {
+                font-weight: bold;
+                color: #FFD700; /* Gold color for emphasis */
+            }
+    </style>
+</head>
+
+<div class="container py-5">
+    <!-- Image and Text Section -->
+    <div class="section-image mb-5">
+        <img src="https://images.pexels.com/photos/2767689/pexels-photo-2767689.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Handmade Crafts">
+        <h3>Handmade Craftsmanship</h3>
+        <p>Explore our unique handcrafted products made with care and attention to detail. <span class="highlight">Artisan at Work</span></p>
+    </div>
+
+    <!-- Form to Create New Product -->
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0 mb-4">
+                <div class="card-header" style="background-color: #6c4f37; color: white; text-align: center; border-radius: 10px;">
+                    <h2>Create New Product</h2>
+                </div>
+                <div class="card-body" style="background-color: #f5f1e3;">
+                    <form asp-action="CreateProduct" method="post">
+                        <div class="form-floating mb-3">
+                            <input type="text" id="Name" name="Name" class="form-control" placeholder="Product Name" required />
+                            <label for="Name">Name</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" id="Description" name="Description" class="form-control" placeholder="Product Description" required />
+                            <label for="Description">Description</label>
+                        </div>
+                        <button type="submit" class="btn btn-lg w-100" style="background-color: #6c4f37; color: white; border-radius: 8px;">
+                            <i class="bi bi-plus-circle"></i> Save Product
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Table to Display Existing Products -->
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card shadow-lg border-0">
+                <div class="card-header" style="background-color: #6c4f37; color: white; text-align: center; border-radius: 10px;">
+                    <h2>Existing Products</h2>
+                </div>
+                <div class="card-body p-4" style="background-color: #f5f1e3;">
+                    <table class="table table-hover text-center align-middle">
+                        <thead style="background-color: #6c4f37; color: white;">
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var product in Model)
+                            {
+                                <tr>
+                                    <td>@product.Id</td>
+                                    <td>@product.Name</td>
+                                    <td>@product.Description</td>
+                                    <td>
+                                        <div class="d-flex justify-content-center gap-2">
+                                            <!-- Edit Button with Icon -->
+                                            <a asp-action="EditProduct" asp-route-id="@product.Id" class="btn btn-custom-edit btn-sm" style="border-radius: 8px;">
+                                                <i class="bi bi-pencil-square"></i> Edit
+                                            </a>
+                                            <!-- Delete Button with Icon -->
+                                            <form asp-action="DeleteProduct" asp-route-id="@product.Id" method="post">
+                                                <button type="submit" class="btn btn-custom-delete btn-sm" style="border-radius: 8px;">
+                                                    <i class="bi bi-trash"></i> Delete
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
